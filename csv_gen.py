@@ -1,4 +1,5 @@
 import csv
+import math
 
 ###CONTROLS
 #Units Unknown
@@ -21,16 +22,20 @@ pressure_sense = ['P_Pres0','P_Pres1','P_Pres2','P_Pres3','P_Pres4', 'P_Pres5', 
 prop_pressure_sense = ['P_Tem0','P_Tem1','P_Tem2','P_Tem3','P_Tem4','P_Tem5','P_Tem6','P_Tem7','P_Tem8']
 
 
-#all_sensors = [dist_laser_sense, dist_lidar_sense, pressure_brake_sense, thermo_brake_sense, pressure_sense, prop_pressure_sense]
+all_sensors = [dist_laser_sense, dist_lidar_sense, pressure_brake_sense, thermo_brake_sense, pressure_sense, prop_pressure_sense]
 
-#Flatten list of lists 
-#all_sensors = [sensor for sensor_list in all_sensors for sensor in sensor_list]
+all_sensors = [sensor for sensor_list in all_sensors for sensor in sensor_list]
+
+for index, sensor in enumerate(all_sensors):
+	tmp_buff = [sensor] + [88] * 100 
+	all_sensors[index] = tmp_buff
+
+
 
 #Generate arrays of data and append them to each named sensor
-
-
 
 with open('out.csv', 'w') as csvfile:
 	filewriter = csv.writer(csvfile, delimiter=',',
 		quotechar='|', quoting=csv.QUOTE_MINIMAL)
-	filewriter.writerow(['sens_1', '2000', '1000'])
+	for sensor_data in all_sensors:
+		filewriter.writerow(sensor_data)
